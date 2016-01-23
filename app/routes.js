@@ -1,3 +1,5 @@
+var path = require('path');
+
 module.exports = function(app, passport) {
 
     // =====================================
@@ -56,6 +58,10 @@ module.exports = function(app, passport) {
             user : req.user // get the user out of session and pass to template
         });
     });
+
+    app.get('/list', isLoggedIn, function(req, res) {
+        res.sendfile(path.resolve('./views/list.html'));
+    })
 
     // =====================================
     // LOGOUT ==============================

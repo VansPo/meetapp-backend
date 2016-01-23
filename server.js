@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({'extended':'true'}));            // parse applica
 app.use(bodyParser.json());                                     // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 app.use(methodOverride());
-app.use(express.static(__dirname + '/public'));                 // set the static files location /public/img will be /img for users
+app.use(express.static(__dirname + '/app/public'));                 // set the static files location /public/img will be /img for users
 
 app.set('view engine', 'ejs'); // set up ejs for templating
 
@@ -40,6 +40,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./app/api.js')(app, passport); // api functions
 
 // launch ======================================================================
 app.listen(port);

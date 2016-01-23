@@ -1,8 +1,12 @@
+var Todo = require('../app/models/todo.js');
+
 module.exports = function(app, passport) {
 
   app.get('/api/todos', function(req, res) {
     //fing all todos and send them is json format
-    Todo.find(functions(err, todos) {
+    Todo.find(
+      { userId: req.user.id },
+      function(err, todos) {
       if (err)
         res.send(err)
 
@@ -10,16 +14,19 @@ module.exports = function(app, passport) {
     });
   });
 
-  app.post('api/todos', function(req, res) {
+  app.post('/api/todos', function(req, res) {
 
     Todo.create({
+      userId: req.user.id,
       text: req.body.text,
       done:false
     }, function(err, todo) {
       if (err)
         res.send(err);
 
-      Todo.find(function(err, todos) {
+      Todo.find(
+        { userId: req.user.id },
+        function(err, todos) {
         if (err)
           res.send(err)
 
@@ -36,7 +43,9 @@ module.exports = function(app, passport) {
       if (err)
         res.send(err);
 
-      Todo.find(function(err, todos) {
+      Todo.find(
+        { userId: req.user.id },
+        function(err, todos) {
         if (err)
           res.send(err)
 
