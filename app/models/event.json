@@ -28,5 +28,7 @@
     ]
   },
   "attendees": ["id_asd", "id_asdd", "id_dada", "id_ddasda"],
-  "invites": ["id_eee", "id_3123", "id_qewe1", "id_31231"]
+  "invites": ["id_eee", "id_3123", "id_qewe1", "id_31231"],
+  "tags": ["fun", "anticafe", "mtg"],
+  "type": "entertainment"
 }
