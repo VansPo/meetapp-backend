@@ -1,0 +1,32 @@
+{
+  "id": "131",
+  "userId": "id_asd",
+  "title": "Event N1",
+  "description": "Description sddsa",
+  "createdAt": 127002030,
+  "updatedAt": 127002040,
+  "place": {
+    "voteClosed": false,
+    "variants": [
+      {
+        "lat": 123.123,
+        "lng": 123.231,
+        "title": "Some place",
+        "additional": {
+          "phone": "+799999999",
+          "openFrom": "10:00",
+          "openTill": "18:00"
+        },
+        "voteCount": 5
+      },
+      {
+        "lat": 321.123,
+        "lng": 321.231,
+        "title": "Another place",
+        "voteCount": 10
+      }
+    ]
+  },
+  "attendees": ["id_asd", "id_asdd", "id_dada", "id_ddasda"],
+  "invites": ["id_eee", "id_3123", "id_qewe1", "id_31231"]
+}
