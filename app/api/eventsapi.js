@@ -1,13 +1,13 @@
-var User = require('../app/models/user');
-var Event = require('../app/models/event');
+var User = require('../models/user');
+var Event = require('../models/event');
 var express = require('express');
-var Core = require('../app/api/core.js');
 
-module.exports = function(app, passport, jwt) {
+module.exports = function(app, passport, jwt, core) {
 
   var apiRoutes = express.Router();
 
-  apiRoutes.get('/event', Core.auth, function(req, res) {
+  // NOTICE THE BIND HERE!!! fckin js
+  apiRoutes.get('/event', core.auth.bind(core), function(req, res) {
     //fing all todos and send them is json format
     console.log(req.user);
     Event.find({
@@ -21,9 +21,9 @@ module.exports = function(app, passport, jwt) {
       });
   });
 
-  apiRoutes.post('/event', Core.auth, function(req, res) {
+  apiRoutes.post('/event', core.auth.bind(core), function(req, res) {
 
-    if (!req.body.text) {
+    if (!req.body) {
       res.status(401).send({
         success: false,
         message: 'Not enough params'
@@ -31,11 +31,10 @@ module.exports = function(app, passport, jwt) {
       return;
     }
 
-    Event.create({
-      userId: req.user.id,
-      text: req.body.text,
-      done: false
-    }, function(err, event) {
+    console.log(req.body);
+    // just to be sure :)
+    req.body.userId = req.user.id;
+    Event(req.body).save(function(err, event) {
       if (err)
         res.send(err);
 
@@ -49,7 +48,7 @@ module.exports = function(app, passport, jwt) {
     });
   });
 
-  apiRoutes.delete('/event/:event_id', Core.auth, function(req, res) {
+  apiRoutes.delete('/event/:event_id', core.auth.bind(core), function(req, res) {
 
     Event.remove({
       _id: req.params.event_id
@@ -70,4 +69,4 @@ module.exports = function(app, passport, jwt) {
   });
 
   app.use('/api', apiRoutes);
-}
+};

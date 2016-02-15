@@ -1,4 +1,4 @@
-var User = require('../app/models/user');
+var User = require('../models/user');
 var express = require('express');
 
 module.exports = function(app, passport, jwt) {
