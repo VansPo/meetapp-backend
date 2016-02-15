@@ -99,7 +99,7 @@ module.exports = function(app, passport, jwt) {
 
 
   apiRoutes.get('/event', auth, function(req, res) {
-    //fing all todos and send them is json format
+    //fing all todos and send them in json format
     console.log(req.user);
     Event.find({
         userId: req.user.id
@@ -161,4 +161,4 @@ module.exports = function(app, passport, jwt) {
   });
 
   app.use('/api', apiRoutes);
-}
+};
