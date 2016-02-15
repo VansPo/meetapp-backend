@@ -1,9 +1,49 @@
 var mongoose = require('mongoose');
+Schema = mongoose.Schema;
 
-var event = mongoose.model('Event', {
-    userId: String,
-    text : String
+var Variant = new Schema({
+    lat: Number,
+    lon: Number,
+    title: String,
+    additional: {
+        phone: String,
+        openFrom: String,
+        openTill: String
+    },
+    voteCount: Number
 });
 
+var Attendee = new Schema({
+    userId: String,
+    userName: String
+});
 
-module.exports = mongoose.model('Event', event);
+var eventSchema = new Schema({
+    userId: String,
+    title: String,
+    description: String,
+    createdAt: { type:Date, required:false },
+    updatedAt: { type:Date, required:false },
+    dateFrom: { type:Date, required:false },
+    dateTo: { type:Date, required:false },
+    place: {
+        voteClosed: Boolean,
+        variants: [Variant]
+    },
+    attendees: [Attendee],
+    invites: [Attendee],
+    tags: [String],
+    type: String,
+    done: {type: Boolean, default: false}
+});
+
+eventSchema.pre('save', function(next){
+    var now = new Date();
+    this.updatedAt = now;
+    if ( !this.createdAt ) {
+        this.createdAt = now;
+    }
+    next();
+});
+
+module.exports = mongoose.model('Event', eventSchema);
