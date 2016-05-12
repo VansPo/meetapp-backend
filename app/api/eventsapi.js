@@ -2,71 +2,91 @@ var User = require('../models/user');
 var Event = require('../models/event');
 var express = require('express');
 
-module.exports = function(app, passport, jwt, core) {
+module.exports = function (app, passport, jwt, core) {
 
-  var apiRoutes = express.Router();
+    var apiRoutes = express.Router();
 
-  // NOTICE THE BIND HERE!!! fckin js
-  apiRoutes.get('/event', core.auth.bind(core), function(req, res) {
-    //fing all todos and send them is json format
-    console.log(req.user);
-    Event.find({
-        userId: req.user.id
-      },
-      function(err, events) {
-        if (err)
-          res.send(err);
-
-        res.json(events);
-      });
-  });
-
-  apiRoutes.post('/event', core.auth.bind(core), function(req, res) {
-
-    if (!req.body) {
-      res.status(401).send({
-        success: false,
-        message: 'Not enough params'
-      });
-      return;
-    }
-
-    console.log(req.body);
-    // just to be sure :)
-    req.body.userId = req.user.id;
-    Event(req.body).save(function(err, event) {
-      if (err)
-        res.send(err);
-
-      if (!event)
-        res.send({
-          success: false,
-          message: 'Could not create event'
+    // NOTICE THE BIND HERE!!! fckin js
+    apiRoutes.get('/event', core.auth.bind(core), function (req, res) {
+        Event.paginate({
+            userId: req.user.id
+        }, {
+            page: req.query.page,
+            limit: req.query.limit
+        }, function (err, events) {
+            if (err) res.send(err);
+            res.json(core.message(true, null, events))
         });
-
-      res.json(event);
     });
-  });
 
-  apiRoutes.delete('/event/:event_id', core.auth.bind(core), function(req, res) {
 
-    Event.remove({
-      _id: req.params.event_id
-    }, function(err, event) {
-      if (err)
-        res.send(err);
+    //get all events (paginated)
+    apiRoutes.get('/events', function (req, res) {
+        //var options = {
+        //  select:   'id title description',
+        //  sort:     { date: -1 },
+        //  populate: 'author',
+        //  lean:     true,
+        //  offset:   20,
+        //  limit:    10
+        //};
+        //
+        //Event.paginate(query, options).then(function(result) {
 
-      if (!event)
-        res.send({
-          success: false,
-          message: 'Could not delete event'
+        Event.paginate({}, {
+            page: req.query.page,
+            limit: req.query.limit
+        }, function (err, events) {
+            if (err) res.send(err);
+            res.json(core.message(true, null, events))
         });
+    });
 
-      res.send({
-        success: true
-      });
-    })
-  });
+    apiRoutes.post('/event', core.auth.bind(core), function (req, res) {
 
-  app.use('/api', apiRoutes);
+        if (!req.body) {
+            res.status(401).send({
+                success: false,
+                message: 'Not enough params'
+            });
+            return;
+        }
+
+        // just to be sure :)
+        req.body.userId = req.user.id;
+        Event(req.body).save(function (err, event) {
+            if (err)
+                res.send(err);
+
+            if (!event)
+                res.send({
+                    success: false,
+                    message: 'Could not create event'
+                });
+
+            res.json(core.message(true, null, event));
+        });
+    });
+
+    apiRoutes.delete('/event/:event_id', core.auth.bind(core), function (req, res) {
+
+        Event.remove({
+            _id: req.params.event_id
+        }, function (err, event) {
+            if (err)
+                res.send(err);
+
+            if (!event)
+                res.send({
+                    success: false,
+                    message: 'Could not delete event'
+                });
+
+            res.send({
+                success: true
+            });
+        })
+    });
+
+    app.use('/api', apiRoutes);
 };

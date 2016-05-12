@@ -1,4 +1,10 @@
 var mongoose = require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
+
+mongoosePaginate.paginate.options = {
+    limit: 100
+};
+
 Schema = mongoose.Schema;
 
 var Variant = new Schema({
@@ -36,6 +42,7 @@ var eventSchema = new Schema({
     type: String,
     done: {type: Boolean, default: false}
 });
+eventSchema.plugin(mongoosePaginate);
 
 eventSchema.pre('save', function(next){
     var now = new Date();

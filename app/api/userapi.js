@@ -1,7 +1,7 @@
 var User = require('../models/user');
 var express = require('express');
 
-module.exports = function (app, passport, jwt) {
+module.exports = function (app, passport, jwt, core) {
 
     var apiRoutes = express.Router();
 
@@ -117,6 +117,19 @@ module.exports = function (app, passport, jwt) {
             }
 
         });
+    });
+
+    apiRoutes.get('/user', function(req, res) {
+        User.find({}, function(err, users) {
+            if (err) throw err;
+
+            var userList = [];
+            users.forEach(function(user) {
+               userList.push(user.userShort(null));
+            });
+
+            res.json(core.message(true, null, userList))
+        })
     });
 
     app.use('/api', apiRoutes);

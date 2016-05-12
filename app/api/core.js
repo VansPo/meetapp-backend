@@ -38,6 +38,14 @@ Core.prototype.auth = function (req, res, next) {
     }
 };
 
+Core.prototype.message = function (success, message, data) {
+    return {
+        success: true,
+        message: message,
+        data: data
+    }
+};
+
 module.exports = function (app) {
     return new Core(app);
 };
