@@ -5,7 +5,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('../app/models/user');
 
 // expose this function to our app using module.exports
-module.exports = function(passport) {
+module.exports = function(passport, app) {
 
   // =========================================================================
   // passport session setup ==================================================
@@ -64,7 +64,9 @@ module.exports = function(passport) {
             // set the user's local credentials
             newUser.local.email = email;
             newUser.local.password = newUser.generateHash(password);
-            newUser.local.token =
+            newUser.local.token = jwt.sign(newUser, app.get('superSecret'), {
+              expiresInMinutes: 0 // never expires
+            });
 
               // save the user
               newUser.save(function(err) {

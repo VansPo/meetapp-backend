@@ -46,5 +46,17 @@ userSchema.methods.validPassword = function (password) {
     return bcrypt.compareSync(password, this.local.password);
 };
 
+userSchema.methods.userShort = function(jwt) {
+    return {
+        email: this.local.email,
+        name: this.local.name,
+        phone: this.local.phone,
+        skype: this.local.skype,
+        avatarUrl: this.local.avatarUrl,
+        about: this.local.about,
+        token: jwt
+    };
+};
+
 // create the model for users and expose it to our app
 module.exports = mongoose.model('User', userSchema);
