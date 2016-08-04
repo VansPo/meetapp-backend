@@ -48,6 +48,7 @@ userSchema.methods.validPassword = function (password) {
 
 userSchema.methods.userShort = function(jwt) {
     return {
+        id: this._id,
         email: this.local.email,
         name: this.local.name,
         phone: this.local.phone,

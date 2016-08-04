@@ -19,13 +19,8 @@ var Variant = new Schema({
     voteCount: Number
 });
 
-var Attendee = new Schema({
-    userId: String,
-    userName: String
-});
-
 var eventSchema = new Schema({
-    userId: String,
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
     title: String,
     description: String,
     createdAt: { type:Date, required:false },
@@ -36,8 +31,8 @@ var eventSchema = new Schema({
         voteClosed: Boolean,
         variants: [Variant]
     },
-    attendees: [Attendee],
-    invites: [Attendee],
+    attendees: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    invites: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     tags: [String],
     type: String,
     done: {type: Boolean, default: false}

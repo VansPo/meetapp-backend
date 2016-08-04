@@ -11,6 +11,8 @@ module.exports = function (app, passport, jwt, core) {
 
         var email = req.body.email;
         var password = req.body.password;
+        var name = req.body.name;
+        var phone = req.body.phone;
 
         if (!email || !password) {
             res.json({
@@ -45,6 +47,8 @@ module.exports = function (app, passport, jwt, core) {
                 // set the user's local credentials
                 newUser.local.email = email;
                 newUser.local.password = newUser.generateHash(password);
+                newUser.local.name = name;
+                newUser.local.phone = phone;
 
                 var token = jwt.sign(newUser, app.get('superSecret'), {
                     expiresInMinutes: 0 // never expires
