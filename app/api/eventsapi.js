@@ -18,7 +18,7 @@ module.exports = function (app, passport, jwt, core) {
             },
             page: req.query.page,
             limit: req.query.limit,
-            sort: { updatedAt: -1 }
+            sort: { createdAt: -1 }
         }, function (err, events) {
             if (err) res.send(err);
             res.json(core.message(true, null, events))
@@ -46,7 +46,7 @@ module.exports = function (app, passport, jwt, core) {
             },
             page: req.query.page,
             limit: req.query.limit,
-            sort: { updatedAt: -1 }
+            sort: { createdAt: -1 }
         }, function (err, events) {
             if (err) res.send(err);
             res.json(core.message(true, null, events))
