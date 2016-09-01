@@ -10,7 +10,7 @@ module.exports = function (app, passport, jwt, core) {
     apiRoutes.get('/event', core.auth.bind(core), function (req, res) {
         //console.log(req.user._doc._id);
         Event.paginate({
-            "user._id": req.user._doc._id
+            "user": req.user._doc._id
         }, {
             populate: {
                 path: 'user',

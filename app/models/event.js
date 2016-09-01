@@ -12,6 +12,8 @@ var Variant = new Schema({
     lon: Number,
     title: String,
     additional: {
+        address: String,
+        url: String,
         phone: String,
         openFrom: String,
         openTill: String
